@@ -1,7 +1,7 @@
 import "./styles/Dashboard.css"
 import { useNavigate } from "react-router-dom";
 import { useData } from "../context/DataContextProvider"
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import TaskCard from "../components/TaskCard";
 
 function DashboardPage() {
