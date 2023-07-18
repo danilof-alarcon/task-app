@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DataContex } from "./DataContext";
 import { pb } from "../lib/pocketbase.api";
 
@@ -12,7 +12,11 @@ export const useData = () => {
 
 export const DataContextProvider = ({children}) => {
 
+    // Auth Functions
+
     const auth = pb.authStore.isValid
+    const [userData, setUserData] = useState([])
+    const [taskData, setTaskData] = useState([])
 
     const logInRequest = async(email, password) => {
         const authData = await pb.collection('users').authWithPassword(`${email}`, `${password}`);
@@ -34,18 +38,32 @@ export const DataContextProvider = ({children}) => {
         return (createUser, logUser);
     }
 
-    const getUserDataRequest = async() => {
-        pb.autoCancellation(false);
-        const record = await pb.collection('users').getOne(`${pb.authStore.model.id}`);
-        return record
-    }
-
     const handleLogOutRequest = async() => {
         pb.authStore.clear();
     }
 
+    // App Functions
+
+    const getUserDataRequest = async() => {
+        pb.autoCancellation(false);
+
+        const userData = await pb.collection('users').getOne(`${pb.authStore.model.id}`);
+        setUserData(userData)
+    }
+
+    const loadTasksRequest = async() => {
+        pb.autoCancellation(false);
+        
+        const taskData = await pb.collection('tasks').getFullList({filter: `user="${pb.authStore.model.id}"`});
+        setTaskData(taskData)
+    }
+
+
+
+
+
     return (
-        <DataContex.Provider value={{ auth, logInRequest, RegisterRequest, getUserDataRequest, handleLogOutRequest }}>
+        <DataContex.Provider value={{ auth, userData, taskData, logInRequest, RegisterRequest, getUserDataRequest, handleLogOutRequest, loadTasksRequest }}>
             {children}
         </DataContex.Provider>
     )

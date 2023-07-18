@@ -2,12 +2,12 @@ import "./styles/Dashboard.css"
 import { useNavigate } from "react-router-dom";
 import { useData } from "../context/DataContextProvider"
 import { useEffect, useState } from "react";
+import TaskCard from "../components/TaskCard";
 
 function DashboardPage() {
 
     // Auth
-
-    const { auth, getUserDataRequest, handleLogOutRequest } = useData()
+    const { auth, userData, taskData, getUserDataRequest, handleLogOutRequest, loadTasksRequest } = useData()
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,13 +22,18 @@ function DashboardPage() {
 
     // Code
 
-    const [userData, setUserData] = useState('');
-
     useEffect(() => {
-        getUserDataRequest().then(userData => {
-          setUserData(userData);
-        });
+        getUserDataRequest();
+        loadTasksRequest();
     }, []);
+
+    function renderMain() {
+        if (taskData.length === 0) return <h3>No hay tareas aún...</h3>
+    
+        return taskData.map( task => (
+            <TaskCard task={task} key={task.id}/>
+        )) 
+    }
 
     async function handleLogOut() {
         await handleLogOutRequest()
@@ -39,6 +44,11 @@ function DashboardPage() {
         <div className="dashboard-container">
             <h1>Dashboard Page</h1>
             <p>👋 Hello {userData.name}</p>
+            <br />
+
+            {renderMain()}
+
+            <br />
             <button type="submit" onClick={handleLogOut} className="secondary-button">Log Out</button>
         </div>
     )
