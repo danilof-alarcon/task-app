@@ -1,0 +1,76 @@
+.log-reg-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Spline Sans', sans-serif;
+    color: #18181C;
+    padding: 40px;
+}
+
+.log-reg-container h1 {
+    font-size: 32px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    max-width: 450px;
+    padding-top: 40px;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+}
+
+.input-container label{
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.input-container input{
+    padding: 16px;
+    border: 1px solid #DFDFDF;
+    border-radius: 10px;
+    margin-top: 8px;
+    background: #FFF;
+    box-shadow: 0px 4px 5px 0px rgba(22, 22, 22, 0.05);
+    font-size: 16px;
+    font-weight: 300;
+    color: #61636a;
+}
+
+.input-container input:focus{
+    outline: none;
+}
+
+.log-reg-button {
+    color: white;
+    padding: 16px;
+    border-radius: 10px;
+    background: #141418;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    transition: 0.3s;
+}
+
+.log-reg-button:hover{
+    background: #292727;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.redirecter{
+    padding-top: 40px;
+    color: #141418;
+}
+
+.redirecter a{
+    color: #141418;
+    font-weight: 600;
+}
