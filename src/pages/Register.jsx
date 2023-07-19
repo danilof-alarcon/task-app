@@ -48,7 +48,7 @@ function RegisterPage() {
     };
 
     return(
-        <div className="log-reg-container">
+        <div className="auth-container">
             <h1>Register Page</h1>
 
             <Formik 
@@ -67,7 +67,7 @@ function RegisterPage() {
                         <label>Password</label>
                         <Field type='password' name='password' id="password" minLength={8} required className="input"/>
                     </div>
-                    <button type="submit" disabled={isSubmitting} className='log-reg-button'>
+                    <button type="submit" disabled={isSubmitting} className='form-button'>
                         {isSubmitting ? 'Creating User...' : 'Register'}
                     </button>
                 </Form>

@@ -45,7 +45,7 @@ function LoginPage() {
     }
 
     return(
-        <div className="log-reg-container">
+        <div className="auth-container">
             <h1>Sign in to your account</h1>
 
             <Formik
@@ -60,7 +60,7 @@ function LoginPage() {
                         <label>Password</label>
                         <Field type='password' name='password' id="password" required className="input"/>
                     </div>
-                    <button type="submit" disabled={isSubmitting} className='log-reg-button'>
+                    <button type="submit" disabled={isSubmitting} className='form-button'>
                         {isSubmitting ? 'Wait...' : 'Log In'}
                     </button>
                 </Form>

@@ -54,16 +54,27 @@ export const DataContextProvider = ({children}) => {
     const loadTasksRequest = async() => {
         pb.autoCancellation(false);
         
-        const taskData = await pb.collection('tasks').getFullList({filter: `user="${pb.authStore.model.id}"`});
+        const taskData = await pb.collection('tasks').getFullList({
+            filter: `user="${pb.authStore.model.id}"`,
+            sort: '-created'
+        });
         setTaskData(taskData)
     }
 
-
-
-
+    const createTaskRequest = async(title, description) => {
+        const data = {
+            "title": title,
+            "description": description,
+            "done": false,
+            "user": pb.authStore.model.id
+        };
+        
+        const record = await pb.collection('tasks').create(data);
+        return record
+    }
 
     return (
-        <DataContex.Provider value={{ auth, userData, taskData, logInRequest, RegisterRequest, getUserDataRequest, handleLogOutRequest, loadTasksRequest }}>
+        <DataContex.Provider value={{ auth, userData, taskData, logInRequest, RegisterRequest, getUserDataRequest, handleLogOutRequest, loadTasksRequest, createTaskRequest }}>
             {children}
         </DataContex.Provider>
     )
