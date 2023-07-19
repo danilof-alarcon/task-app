@@ -12,6 +12,7 @@ function App() {
 
   return (
     <DataContextProvider>
+
       <Router>
         <Routes>
           <Route path='/' element={<LoginPage />}/>
@@ -22,6 +23,7 @@ function App() {
           <Route path='*' element={<NotFoundPage />}/>
         </Routes>
       </Router>
+      
     </DataContextProvider>
   )
 }

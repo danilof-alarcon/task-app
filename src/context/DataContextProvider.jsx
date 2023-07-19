@@ -16,7 +16,8 @@ export const DataContextProvider = ({children}) => {
 
     const auth = pb.authStore.isValid
     const [userData, setUserData] = useState([])
-    const [taskData, setTaskData] = useState([])
+    const [tasksData, setTasksData] = useState([])
+    const [oneTaskData, setOneTaskData] = useState([])
 
     const logInRequest = async(email, password) => {
         const authData = await pb.collection('users').authWithPassword(`${email}`, `${password}`);
@@ -58,7 +59,7 @@ export const DataContextProvider = ({children}) => {
             filter: `user="${pb.authStore.model.id}"`,
             sort: '-created'
         });
-        setTaskData(taskData)
+        setTasksData(taskData)
     }
 
     const createTaskRequest = async(title, description) => {
@@ -73,8 +74,49 @@ export const DataContextProvider = ({children}) => {
         return record
     }
 
+    const loadOneTaskRequest = async(id) => {
+        pb.autoCancellation(false);
+
+        const record = await pb.collection('tasks').getOne(id);
+        setOneTaskData(record)
+    }
+
+    const updateTaskRequest = async(id, title, description) => {
+        pb.autoCancellation(false);
+
+        const data = {
+            "title": title,
+            "description": description,
+        };
+        
+        const record = await pb.collection('tasks').update(id, data);
+        return record
+    }
+
+    const deleteTaskRequest = async(id) => {
+        pb.autoCancellation(false);
+
+        await pb.collection('tasks').delete(id);
+        
+        setTasksData(tasksData.filter(task => task.id !== id))
+    }
+
+    const toggleDoneRequest = async(value, id) => {
+        pb.autoCancellation(false);
+
+        const data = {
+            "done": !value
+        };
+        
+        await pb.collection('tasks').update(id, data);
+
+        setTasksData(
+            tasksData.map((task) => task.id == id ? { ... task, done: !task.done} : task)
+        )
+    }
+
     return (
-        <DataContex.Provider value={{ auth, userData, taskData, logInRequest, RegisterRequest, getUserDataRequest, handleLogOutRequest, loadTasksRequest, createTaskRequest }}>
+        <DataContex.Provider value={{ auth, userData, tasksData, oneTaskData, logInRequest, RegisterRequest, getUserDataRequest, handleLogOutRequest, loadTasksRequest, createTaskRequest, loadOneTaskRequest, updateTaskRequest, deleteTaskRequest, toggleDoneRequest }}>
             {children}
         </DataContex.Provider>
     )
