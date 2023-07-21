@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useData } from "../context/DataContextProvider"
 import { useEffect, useState } from "react";
 import { Formik, Field, Form } from 'formik';
-import AlertMessage from "../components/AlertMessage";
 
 function TaskForm() {
 
@@ -26,11 +25,6 @@ function TaskForm() {
 
     const { id: taskId } = useParams();
     const [isLoading, setIsLoading] = useState(Boolean(taskId));
-    const [showAlert, setShowAlert] = useState(false);
-    const [showMessage, setShowMessage] = useState({
-        message: "",
-        type: "",
-    });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
@@ -49,19 +43,12 @@ function TaskForm() {
         description: taskId ? oneTaskData.description || "" : ""
     };
 
-    const handleSubmitCreate = async (values, actions) => {
+    const handleSubmitCreate = async (values) => {
         const { title, description } = values;
         setIsSubmitting(true)
         try {
             await createTaskRequest(title, description)
-            setShowMessage({
-                message: "Task Created",
-                type: "correct"
-            })
-            setShowAlert(true)
-
-            actions.resetForm();
-            setIsSubmitting(false)
+            navigate("/dashboard")
         } catch (error) {
             console.log(error);
         }
@@ -80,34 +67,28 @@ function TaskForm() {
 
 
     return(
-        <div>
-            <h1>{taskId ? "Edit Task" : "Create Task"}</h1>
+        <div className='page-container'>
+            <div className='auth-container'>
+                <h1>{taskId ? "Edit Task" : "Create Task"}</h1>
 
-            {isLoading ? (
-                <p>Loading...</p>
-            ) : (
-                <Formik 
-                    initialValues={initialValues}
-                    onSubmit={taskId ? handleSubmitEdit : handleSubmitCreate}>
-                    <Form className='form-container'>
-                        <div className='input-container'>
-                            <label>Title</label>
-                            <Field type='text' name='title' id="title" required className="input"/>
-                        </div>
-                        <div className='input-container'>
-                            <label>Description</label>
-                            <Field type='text' name='description' id="description" className="input"/>
-                        </div>
-                        <button type="submit" disabled={isSubmitting} className='form-button'>
-                            {isSubmitting ? 'Saving...' : 'Save'}
-                        </button>
-                    </Form>
-                </Formik>
-            )}
+                {isLoading ? (
+                    <h3>Loading...</h3>
+                ) : (
+                    <Formik 
+                        initialValues={initialValues}
+                        onSubmit={taskId ? handleSubmitEdit : handleSubmitCreate}>
+                        <Form className='form-container'>
+                            <Field type='text' name='title' id="title" required className="input" placeholder="Task Title" />
+                            <Field type='textarea' as="textarea" rows="4" name='description' id="description" className="input" placeholder="Task Description" />
+                            <button type="submit" disabled={isSubmitting} className='form-button'>
+                                {isSubmitting ? 'Saving...' : 'Save'}
+                            </button>
+                        </Form>
+                    </Formik>
+                )}
 
-
-            {showAlert && <AlertMessage message={showMessage.message} type={showMessage.type}/>}
-            <a href="/dashboard">Back Home</a>
+                <a href="/dashboard">Back to Home</a>
+            </div>
         </div>
     )
 }

@@ -38,7 +38,11 @@ function DashboardPage() {
     }, [])
 
     function renderMain() {
-        if (tasksData.length === 0) return <h3>No tasks yet...</h3>
+        if (tasksData.length === 0) return(
+            <div className="empty-container">
+                <h3>What an empty place!</h3>
+            </div>
+        ) 
     
         return tasksData.map( task => (
             <TaskCard task={task} key={task.id}/>
@@ -52,16 +56,18 @@ function DashboardPage() {
 
     return(
         <div className="dashboard-container">
-            <h1>Dashboard Page</h1>
 
             {isLoading ? (
-                <p>Loading...</p>
+                <h3>Loading...</h3>
             ) : (
                 <div>
-                    <p>Hello {userData.name}</p>
-                    <a href="/new">New Task</a>
+                    <div className="menu-container">
+                        <h1>Hello {userData.name}</h1>
+                        <button onClick={() => navigate("/new")}>New Task</button>
+                    </div>
 
                     {renderMain()}
+
                 </div>
             )}
 

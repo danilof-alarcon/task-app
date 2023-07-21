@@ -45,29 +45,26 @@ function LoginPage() {
     }
 
     return(
-        <div className="auth-container">
-            <h1>Sign in to your account</h1>
+        <div className='page-container'>
+            <div className="auth-container">
+                <h1>Welcome Back!</h1>
+                <p>We are happy to see you again</p>
 
-            <Formik
-            initialValues={initialValues}
-            onSubmit={handleSubmit}>
-                <Form className='form-container'>
-                    <div className='input-container'>
-                        <label>Email</label>
-                        <Field type='email' name='email' id="email" required className="input"/>
-                    </div>
-                    <div className='input-container'>
-                        <label>Password</label>
-                        <Field type='password' name='password' id="password" required className="input"/>
-                    </div>
-                    <button type="submit" disabled={isSubmitting} className='form-button'>
-                        {isSubmitting ? 'Wait...' : 'Log In'}
-                    </button>
-                </Form>
-            </Formik>
+                <Formik
+                initialValues={initialValues}
+                onSubmit={handleSubmit}>
+                    <Form className='form-container'>
+                        <Field type='email' name='email' id="email" required className="input" placeholder="Email" />
+                        <Field type='password' name='password' id="password" required className="input" placeholder="Password" />
+                        <button type="submit" disabled={isSubmitting} className='form-button'>
+                            {isSubmitting ? 'Wait...' : 'Log In'}
+                        </button>
+                        {showAlert && <AlertMessage message={"Incorrect User or Password"} type={"error"}/>}
+                    </Form>
+                </Formik>
 
-            {showAlert && <AlertMessage message={"Incorrect User or Password"} type={"error"}/>}
-            <p className='redirecter'>Not a member?  <a href="/register">Register</a></p>
+                <p className='redirecter'>Don’t have an account yet? <a href="/register">Sign Up</a></p>
+            </div>
         </div>
     )
 }
