@@ -48,33 +48,27 @@ function RegisterPage() {
     };
 
     return(
-        <div className="log-reg-container">
-            <h1>Register Page</h1>
+        <div className='page-container'>
+            <div className="auth-container">
+                <h1>Join Now!</h1>
+                <p>Ready to join the game? Register Now!</p>
 
-            <Formik 
-                initialValues={initialValues}
-                onSubmit={handleSubmit}>
-                <Form className='form-container'>
-                    <div className='input-container'>
-                        <label>Name</label>
-                        <Field type='text' name='name' id="name" required className="input"/>
-                    </div>
-                    <div className='input-container'>
-                        <label>Email</label>
-                        <Field type='email' name='email' id="email" required className="input"/>
-                    </div>
-                    <div className='input-container'>
-                        <label>Password</label>
-                        <Field type='password' name='password' id="password" minLength={8} required className="input"/>
-                    </div>
-                    <button type="submit" disabled={isSubmitting} className='log-reg-button'>
-                        {isSubmitting ? 'Creating User...' : 'Register'}
-                    </button>
-                </Form>
-            </Formik>
+                <Formik 
+                    initialValues={initialValues}
+                    onSubmit={handleSubmit}>
+                    <Form className='form-container'>
+                        <Field type='text' name='name' id="name" required className="input" placeholder="Name" />
+                        <Field type='email' name='email' id="email" required className="input" placeholder="Email" />
+                        <Field type='password' name='password' id="password" minLength={8} required className="input" placeholder="Password" />
+                        <button type="submit" disabled={isSubmitting} className='form-button'>
+                            {isSubmitting ? 'Creating User...' : 'Register'}
+                        </button>
+                        {showAlert && <AlertMessage message={"User already exists."} type={"error"}/>}
+                    </Form>
+                </Formik>
 
-            {showAlert && <AlertMessage message={"User Already Exist"} type={"error"}/>}
-            <p className='redirecter'>Already a member?  <a href="/">Log In</a></p>
+                <p className='redirecter'>Already a member?  <a href="/">Log In</a></p>
+            </div>
         </div>
     )
 }
